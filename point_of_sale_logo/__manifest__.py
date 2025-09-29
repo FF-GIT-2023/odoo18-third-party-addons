@@ -37,6 +37,7 @@
         'point_of_sale._assets_pos': [
             'point_of_sale_logo/static/src/xml/navbar_logo.xml',
             'point_of_sale_logo/static/src/xml/receipt_header_logo.xml',
+            'point_of_sale_logo/static/src/js/pos_receipt.js',
             'point_of_sale_logo/static/src/xml/receipt_screen_logo.xml',
         ],
     },
