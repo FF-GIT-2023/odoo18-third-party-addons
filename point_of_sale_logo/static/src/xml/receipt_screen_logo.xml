@@ -24,6 +24,15 @@
                 <p>Powered by Smatek</p>
                 <div t-esc="props.data.name"/>
                 <div id="order-date" t-esc="props.data.date"/>
+                <div class="barcode-area" style="text-align: center; margin-top: 10px;">
+                    <svg id="barcode" style="box-shadow: 0 0 20px rgba(0,139,253,0.25); width: 300px; margin: 30px 0px 30px 0px;"/>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js" onload="generateBarcode()"/>
+                    <script>
+                        function generateBarcode() {
+                           JsBarcode("#barcode", "<t t-esc='getBarcodeValue'/>");
+                        }
+                    </script>
+                </div>
             </div>
         </xpath>
     </t>
