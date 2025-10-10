@@ -36,7 +36,7 @@ class ProductProduct(models.Model):
     @api.depends('barcode','product_tmpl_id.barcode')
     def split_barcode_length(self):
         for i in self:
-            if i.barcode and len(i.barcode)==12:
+            if i.barcode and len(i.barcode)==13:
                 i.export_barcode =i.barcode[2:7]
             else:
                 i.export_barcode= ""
