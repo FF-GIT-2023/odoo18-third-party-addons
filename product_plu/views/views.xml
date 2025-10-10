@@ -1,0 +1,89 @@
+<odoo>
+  <data>
+      <record id="product_export_view" model="ir.ui.view">
+            <field name="name">Update product Export</field>
+            <field name="model">product.export</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <!--<field name="name" style="width:55%%"/>-->
+                            <field name="product_id" style="width:55%%"
+                                    context="{'default_to_weight': 1}" domain="[('to_weight','=',True)]"
+                                   required="is_product_export==False"/>
+
+                            <field name="sale_price" force_save="1"  invisible="product_id==False" style="width:25%%" readonly="True"/>
+                            <field name="to_weight" invisible="1"/>
+                        </group>
+
+                        <group>
+
+                            <field name="is_product_export"/>
+                        </group>
+                    </group>
+                    <footer>
+
+                        <button name="text_product_export" type="object"
+                                invisible="is_product_export==False"
+                                string="Export Products" class="oe_highlight"/>
+
+
+
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_export_view_action" model="ir.actions.act_window">
+            <field name="name">Update product Export</field>
+            <field name="res_model">product.export</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_export_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_product_export" name="Export Product" parent="sale.sale_order_menu"
+                  action="product_export_view_action" sequence="25"/>
+
+
+
+   <record id="product_template_search_view_plu_product" model="ir.ui.view">
+         <field name="name">product.template.search.plu.product</field>
+         <field name="model">product.template</field>
+         <field name="inherit_id" ref="product.product_template_search_view"/>
+         <field name="arch" type="xml">
+             <xpath expr="//filter[@name='filter_to_sell']" position="before">
+                <separator/>
+                 <filter string="PLU" name="is_plu" domain="[('is_plu','!=', False)]"/>
+
+<!--                <filter string="PLU" name="is_plu" domain="[('is_plu','ilike', self)]"/>-->
+
+             </xpath>
+         </field>
+    </record>
+
+       <record id="product_template_only_view_plu" model="ir.ui.view">
+        <field name="name">product.template.combo.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+             <xpath expr="//page[@name='sales']" position="inside">
+                 <group>
+                     <group>
+                      <field name="is_plu"/>
+                 <field name="export_barcode"/>
+                <field name="is_export_piece"/>
+                         </group>
+                 </group>
+
+             </xpath>
+
+        </field>
+       </record>
+
+
+  </data>
+</odoo>
