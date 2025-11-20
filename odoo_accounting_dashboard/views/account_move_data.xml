@@ -6,6 +6,7 @@
             <field name="tag">accounting_dashboard_tags</field>
         </record>
         <menuitem name="Accounting Dashboard" id="account_dashboard"
+                  web_icon="odoo_accounting_dashboard,static/description/icon.png"
                   action="accounting_dashboard_action"/>
     </data>
 </odoo>
