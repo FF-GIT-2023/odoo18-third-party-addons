@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This module is under copyright of 'OdooElevate' -->
+<odoo>
+    
+    <record id="action_yearly_sales_report_client" model="ir.actions.client">
+        <field name="name">Sales Report</field>
+        <field name="tag">oe_sale_dashboard_18_tag</field>
+    </record>
+
+    
+    <menuitem
+        id="menu_yearly_sales_report"
+        name="Sales Report"
+        action="action_yearly_sales_report_client"
+        sequence="10"
+        web_icon="oe_sale_dashboard_18,static/description/icon.png" />
+</odoo>
