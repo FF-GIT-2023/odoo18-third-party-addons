@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This module is under copyright of 'OdooElevate' -->
+<templates id="template" xml:space="preserve">
+    <t t-name="oe_sale_dashboard_18.yearly_sales_dashboard_template" owl="1">
+        <div t-ref="dashboard_root" class="oe_sale_dashboard_18_container p-4" style="overflow-y: auto; height: 100%;">
+            <style>
+                /* This module is under copyright of 'OdooElevate' */
+                /* Basic styling for the OE Sales Dashboard */
+
+                .oe_sale_dashboard_18_container {
+                    font-family: 'Inter', sans-serif;
+                    color: #333;
+                    background-color: #f0f2f5; /* Light grey background for the dashboard area */
+                    min-height: 100vh;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                }
+
+                .oe_sale_dashboard_18_container h1 {
+                    color: #1a202c; /* Darker text for headings */
+                }
+
+                .oe_sale_dashboard_18_container h2 {
+                    color: #2d3748; /* Slightly lighter dark text for subheadings */
+                }
+
+                .oe_sale_dashboard_18_container .sales-section {
+                    border-radius: 0.5rem; /* Rounded corners */
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+                }
+
+                .oe_sale_dashboard_18_container table {
+                    width: 100%;
+                    border-collapse: separate; /* Allow border-radius on cells */
+                    border-spacing: 0;
+                }
+
+                .oe_sale_dashboard_18_container table th,
+                .oe_sale_dashboard_18_container table td {
+                    padding: 12px 24px;
+                    text-align: left;
+                    border-bottom: 1px solid #e2e8f0; /* Light grey border for rows */
+                }
+
+                .oe_sale_dashboard_18_container table th:first-child {
+                    border-top-left-radius: 0.5rem;
+                }
+
+                .oe_sale_dashboard_18_container table th:last-child {
+                    border-top-right-radius: 0.5rem;
+                }
+
+                .oe_sale_dashboard_18_container table th {
+                    background-color: #ebf8ff; /* Light blue for table headers */
+                    font-weight: 600;
+                    color: #4a5568;
+                    text-transform: uppercase;
+                }
+
+                .oe_sale_dashboard_18_container table tbody tr:last-child td {
+                    border-bottom: none; /* No border on the last row */
+                }
+
+                .oe_sale_dashboard_18_container .font-bold {
+                    font-weight: 700;
+                }
+
+                .oe_sale_dashboard_18_container .bg-blue-50 {
+                    background-color: #eff6ff; /* Light blue for "Total" row in posted sales */
+                }
+
+                .oe_sale_dashboard_18_container .bg-green-50 {
+                    background-color: #ecfdf5; /* Light green for "Total" row in unposted sales */
+                }
+
+                .oe_sale_dashboard_18_container .bg-purple-50 {
+                    background-color: #f3e8ff; /* Light purple for "Total" row in quotations */
+                }
+
+                /* Responsive table overflow */
+                .oe_sale_dashboard_18_container .overflow-x-auto {
+                    max-width: 100%;
+                    overflow-x: auto;
+                }
+
+                /* Ensure proper display on smaller screens */
+                @media (max-width: 768px) {
+                    .oe_sale_dashboard_18_container {
+                        padding: 10px;
+                    }
+
+                    .oe_sale_dashboard_18_container .flex-col-reverse-md {
+                        flex-direction: column-reverse;
+                    }
+
+                    .oe_sale_dashboard_18_container .flex-col-md {
+                        flex-direction: column;
+                    }
+                }
+            </style>
+
+            <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Sales Report</h1>
+
+            <!-- Copyright Notice -->
+            <p class="text-sm text-gray-500 text-center mb-4">This module is under copyright of 'OdooElevate'</p>
+
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 p-4 bg-white rounded-lg shadow-md">
+                <div class="mb-4 md:mb-0 md:mr-4">
+                    <label for="dashboardDate" class="block text-gray-700 text-lg font-semibold mb-2">Select Date:</label>
+                    <input type="date" id="dashboardDate" t-att-value="state.selectedDate" t-on-change="onDateChange"
+                           class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                </div>
+                <div t-if="state.isLoading" class="flex items-center justify-center text-blue-600 text-xs">
+                    <svg class="animate-spin mr-0.5 h-2 w-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="6" r="5" stroke="currentColor" stroke-width="2"></circle>
+                        <!-- Removed the path element to ensure a full circle spinner -->
+                    </svg>
+                    Loading data...
+                </div>
+            </div>
+
+            <!-- Posted Sale Orders Section -->
+            <div class="sales-section mb-8 p-6 bg-white rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 text-center">Posted Sale Orders</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-blue-100 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                                <th class="py-3 px-6 border-b">Company</th>
+                                <th class="py-3 px-6 border-b">Today</th>
+                                <th class="py-3 px-6 border-b">Yesterday</th>
+                                <th class="py-3 px-6 border-b">Last Week</th>
+                                <th class="py-3 px-6 border-b">Last Month</th>
+                                <th class="py-3 px-6 border-b">Last Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.postedSalesData" t-as="company_data" t-key="company_data.company_name">
+                                <tr class="hover:bg-gray-50" t-att-class="{'font-bold bg-blue-50': company_data.company_name === 'Total'}">
+                                    <td class="py-3 px-6 border-b text-gray-900" t-esc="company_data.company_name"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Today)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Yesterday)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Week'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Month'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Year'])"/>
+                                </tr>
+                            </t>
+                            <t t-if="state.postedSalesData.length === 0 &amp;&amp; !state.isLoading">
+                                <tr>
+                                    <td colspan="6" class="py-3 px-6 text-center text-gray-600">No posted sales data available.</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/><br/>
+
+            <!-- Unposted Sale Orders Section -->
+            <div class="sales-section mb-8 p-6 bg-white rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 text-center">Unposted Sale Orders</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-green-100 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                                <th class="py-3 px-6 border-b">Company</th>
+                                <th class="py-3 px-6 border-b">Today</th>
+                                <th class="py-3 px-6 border-b">Yesterday</th>
+                                <th class="py-3 px-6 border-b">Last Week</th>
+                                <th class="py-3 px-6 border-b">Last Month</th>
+                                <th class="py-3 px-6 border-b">Last Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.unpostedSalesData" t-as="company_data" t-key="company_data.company_name">
+                                <tr class="hover:bg-gray-50" t-att-class="{'font-bold bg-green-50': company_data.company_name === 'Total'}">
+                                    <td class="py-3 px-6 border-b text-gray-900" t-esc="company_data.company_name"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Today)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Yesterday)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Week'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Month'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Year'])"/>
+                                </tr>
+                            </t>
+                            <t t-if="state.unpostedSalesData.length === 0 &amp;&amp; !state.isLoading">
+                                <tr>
+                                    <td colspan="6" class="py-3 px-6 text-center text-gray-600">No unposted sales data available.</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/><br/>
+
+            <!-- All Quotations Section -->
+            <div class="sales-section mb-8 p-6 bg-white rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800 text-center">All Quotations</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-purple-100 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                                <th class="py-3 px-6 border-b">Company</th>
+                                <th class="py-3 px-6 border-b">Today</th>
+                                <th class="py-3 px-6 border-b">Yesterday</th>
+                                <th class="py-3 px-6 border-b">Last Week</th>
+                                <th class="py-3 px-6 border-b">Last Month</th>
+                                <th class="py-3 px-6 border-b">Last Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="state.quotationsData" t-as="company_data" t-key="company_data.company_name">
+                                <tr class="hover:bg-gray-50" t-att-class="{'font-bold bg-purple-50': company_data.company_name === 'Total'}">
+                                    <td class="py-3 px-6 border-b text-gray-900" t-esc="company_data.company_name"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Today)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data.Yesterday)"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Week'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Month'])"/>
+                                    <td class="py-3 px-6 border-b text-gray-700" t-esc="this.formatNumber(company_data['Last Year'])"/>
+                                </tr>
+                            </t>
+                            <t t-if="state.quotationsData.length === 0 &amp;&amp; !state.isLoading">
+                                <tr>
+                                    <td colspan="6" class="py-3 px-6 text-center text-gray-600">No quotations data available.</td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/><br/><br/><br/>
+        </div>
+    </t>
+</templates>
