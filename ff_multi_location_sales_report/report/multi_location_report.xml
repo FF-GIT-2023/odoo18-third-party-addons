@@ -1,0 +1,403 @@
+<odoo>
+    <record
+    id="paper_format_multi_location_sales_report_pdf"
+    model="report.paperformat"
+  >
+        <field name="name">Multi-Store Sales Report PDF</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">40</field>
+        <field name="dpi">80</field>
+    </record>
+    <template id="multi_location_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <style>
+                    .table td,
+                    .table th {
+                    font-size: 10px;
+                    padding: 2px;
+                    }
+                    .date_range {
+                    font-size: 15px;
+                    }
+                </style>
+                <div class="page" style="page-break-after: always;">
+                    <table width="100%">
+                        <tr>
+                            <td align="center" colspan="3" style="font-size: 22px;">
+                                <b>
+                                    <span t-raw="title" />
+                                </b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                align="center"
+                style="padding-top: 5%; font-size: 18px;"
+              >
+                                Period:&#160;
+                                <b>
+                                    <span t-raw="start_date" />
+                                    &#160;&#160; - &#160;&#160;
+                                    <span t-raw="end_date" />
+                                </b>
+                            </td>
+                        </tr>
+                    </table>
+                    <t t-set="grand_total_service" t-value="0" />
+                    <t t-set="grand_total_tip" t-value="0" />
+                    <t t-set="grand_total_tax" t-value="0" />
+                    <t t-set="grand_product_wi_tax" t-value="0" />
+                    <t t-set="grand_total_discount" t-value="0" />
+                    <t t-set="grand_total_sales" t-value="0" />
+                    <t t-set="grand_total_price" t-value="0" />
+                    <t t-set="grand_no_of_customers" t-value="0" />
+                    <t t-set="grand_total_voids" t-value="0" />
+                    <t t-set="grand_total_php" t-value="0" />
+                    <t t-set="grand_total_working_hours" t-value="0" />
+                    <t t-set="grand_total_rent" t-value="0" />
+                    <t t-foreach="data" t-as="company_name">
+                        <b><t t-esc="company_name" /></b>
+                        <table width="100%" class="table table-bordered">
+                            <tr style="background-color: #F6F6F6;">
+                                <t t-foreach="categories" t-as="category_name">
+                                    <th class="text-center">
+                                        <t t-esc="category_name" />
+                                    </th>
+                                </t>
+                                <th class="text-center">Total Service</th>
+                                <th class="text-center">Product W/Tax</th>
+                                <th class="text-center">Tax</th>
+                                <th class="text-center">Tip</th>
+                                <th class="text-center">Rent</th>
+                                <th class="text-center">Discount</th>
+                                <th class="text-center">Total Price</th>
+                                <th class="text-center">Total Sales</th>
+                                <th class="text-center">No.of Cust</th>
+                                <th class="text-center">Voids</th>
+                                <th class="text-center">PHP</th>
+                                <th class="text-center">Total Hours</th>
+
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <t t-foreach="categories" t-as="category_name">
+                                        <td class="text-center">
+                                            <t
+                        t-if="data[company_name].get(category_name)"
+                      >
+                                                <span class="mr3 ml5" t-esc="symbol" />
+                                                <t
+                          t-esc="'%.2f'%data[company_name][category_name]['amount']"
+                        />
+                                            </t>
+                                            <t t-else="">
+                                                0.00
+                                            </t>
+                                        </td>
+                                    </t>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['total_service']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_service']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['product_wi_tax']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['product_wi_tax']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t
+                      t-if="data[company_name]['total_tax_amount']"
+                    >
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_tax_amount']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['total_tip']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_tip']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="data[company_name]['total_rent']" />
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['total_discount']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_discount']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['total_price']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_price']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="data[company_name]['total_sales']">
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                        t-esc="'%.2f'%data[company_name]['total_sales']"
+                      />
+                                        </t>
+                                        <t t-else="">
+                                            0.00
+                                        </t>
+                                    </td>
+                                    <td class="text-center">
+                                        <t
+                      t-esc="data[company_name]['no_of_customers']"
+                    />
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="data[company_name]['cancelled']" />
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="data[company_name]['total_php']" />
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="data[company_name]['worked_hours']" />
+                                    </td>
+                                </tr>
+                                <t t-if="data[company_name]['total_service']">
+                                    <t
+                    t-set="grand_total_service"
+                    t-value="grand_total_service + data[company_name]['total_service']"
+                  />
+                                </t>
+                                <t t-if="data[company_name]['total_tip']">
+                                    <t
+                    t-set="grand_total_tip"
+                    t-value="grand_total_tip + data[company_name]['total_tip']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['total_tax_amount']">
+                                    <t
+                    t-set="grand_total_tax"
+                    t-value="grand_total_tax + data[company_name]['total_tax_amount']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['product_wi_tax']">
+                                    <t
+                    t-set="grand_product_wi_tax"
+                    t-value="grand_product_wi_tax + data[company_name]['product_wi_tax']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['total_discount']">
+                                    <t
+                    t-set="grand_total_discount"
+                    t-value="grand_total_discount + data[company_name]['total_discount']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['total_sales']">
+                                    <t
+                    t-set="grand_total_sales"
+                    t-value="grand_total_sales + data[company_name]['total_sales']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['total_price']">
+                                    <t
+                    t-set="grand_total_price"
+                    t-value="grand_total_price + float(data[company_name]['total_price'])"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['no_of_customers']">
+                                    <t
+                    t-set="grand_no_of_customers"
+                    t-value="grand_no_of_customers + data[company_name]['no_of_customers']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['cancelled']">
+                                    <t
+                    t-set="grand_total_voids"
+                    t-value="grand_total_voids + data[company_name]['cancelled']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['total_php']">
+                                    <t
+                    t-set="grand_total_php"
+                    t-value="grand_total_php + data[company_name]['total_php']"
+                  />
+                                </t>
+
+                                <t t-if="data[company_name]['worked_hours']">
+                                    <t
+                    t-set="grand_total_working_hours"
+                    t-value="grand_total_working_hours + float(data[company_name]['worked_hours'])"
+                  />
+                                </t>
+                                <t t-if="data[company_name]['total_rent']">
+                                    <t
+                    t-set="grand_total_rent"
+                    t-value="grand_total_rent + data[company_name]['total_rent']"
+                  />
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <br />
+                    <b>Grand Total</b>
+                    <table width="100%" class="table table-bordered">
+                        <tr style="background-color: #FFDAB9;">
+                                <t t-foreach="categories" t-as="category_name">
+                                    <td class="text-center">
+                                        <strong>
+                                            <span class="mr3 ml5" t-esc="symbol" />
+                                            <t
+                      t-esc="'%.2f'%grand_totals[category_name] if category_name in grand_totals else 0.00"
+                    />
+                                        </strong>
+
+                                    </td>
+                                </t>
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_service" />
+                                    </strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_product_wi_tax" />
+                                    </strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_tax" />
+                                    </strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_tip" />
+                                    </strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>
+                                        <span t-esc="'%.2f' % grand_total_rent" />
+                                    </strong>
+                                </td>
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_discount" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_price" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span class="mr3 ml5" t-esc="symbol" />
+                                        <span t-esc="'%.2f' % grand_total_sales" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span t-esc="grand_no_of_customers" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span t-esc="grand_total_voids" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span t-esc="'%.2f' % grand_total_php" />
+                                    </strong>
+                                </td>
+
+                                <td class="text-center">
+                                    <strong>
+                                        <span
+                    t-esc="'%.2f' % grand_total_working_hours"
+                  />
+                                    </strong>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="multi_location_sales_report_id" model="ir.actions.report">
+        <field name="name">Multi-Location Sales Report</field>
+        <field name="model">multi.location.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field
+      name="report_name"
+    >ff_multi_location_sales_report.multi_location_report_template</field>
+        <field
+      name="report_file"
+    >ff_multi_location_sales_report.multi_location_report_template</field>
+        <field name="binding_model_id" ref="model_multi_location_report" />
+        <field
+      name="paperformat_id"
+      ref="paper_format_multi_location_sales_report_pdf"
+    />
+    </record>
+
+</odoo>
