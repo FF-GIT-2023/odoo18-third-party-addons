@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="multi_location_sales_report_wizard_form" model="ir.ui.view">
+        <field name="name">Multi-Location Sales Report</field>
+        <field name="model">multi.location.report</field>
+        <field name="arch" type="xml">
+            <form string="Sales Wizard">
+                <group>
+                    <group>
+                        <field name="company_ids" widget="many2many_tags" />
+                        <field name="all_location" />
+                    </group>
+                    <group>
+                        <field name="start_date" />
+                        <field name="end_date" />
+                    </group>
+                </group>
+
+                <footer>
+                    <button
+            name="get_report"
+            string="Generate"
+            type="object"
+            class="oe_highlight"
+          />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="multi_location_sales_report_wiz_action" model="ir.actions.act_window">
+        <field name="name">Multi-Location Sales Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">multi.location.report</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="multi_location_sales_report_wizard_form" />
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+    id="parent_sales_report_id"
+    name="Multi-Location Sales Report"
+    parent="point_of_sale.menu_point_rep"
+    sequence="5"
+    action="multi_location_sales_report_wiz_action"
+  />
+<!--    <menuitem-->
+<!--    id="child_sales_report_id"-->
+<!--    name="Multi-Location Sales Report"-->
+<!--    parent="parent_sales_report_id"-->
+<!--    sequence="0"-->
+<!--    action="multi_location_sales_report_wiz_action"-->
+<!--  />-->
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+user_access_multi_location_report,user multi location report access,model_multi_location_report,,0,0,0,0
+manager_access_multi_location_report,user multi location report access,model_multi_location_report,,1,1,1,1
