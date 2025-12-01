@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_expiry_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+
+                <div class="page" style="font-size:13px;">
+
+
+                    <h2
+            style="text-align:center; font-weight:700; margin-bottom:5px; margin-top:10px;"
+          >
+                        Product Expiry Report
+                    </h2>
+
+
+                    <p style="text-align:center; font-size:14px; margin-top:0px;">
+                        Tracking:
+                        <t t-if="tracking_wise == 'tracking_wise'">Lot/Serial Wise</t>
+                        <t t-if="tracking_wise == 'product_wise'">Product Wise</t>
+                        <t t-if="tracking_wise == 'location_wise'">Location Wise</t>
+
+                        &#160; | &#160;
+
+                        Type:
+                        <t t-if="expiry_type == 'expired'">Expired</t>
+                        <t t-if="expiry_type == 'expire'">Going to Expire</t>
+                    </p>
+
+
+                    <p style="font-size:13px; margin-bottom:10px; margin-left:5px;">
+                        <b>Period:</b>
+                        <t t-esc="start_date" />
+                        to
+                        <t t-esc="end_date" />
+                        <br />
+
+                        <t t-if="categories">
+                            <b>Categories:</b>
+                            <t t-esc="categories" />
+                        </t>
+                    </p>
+
+
+                    <table
+            style="
+                        width:100%;
+                        border-collapse:collapse;
+                        font-size:13px;
+                        text-align:center;
+                        margin-top:20px;
+                    "
+          >
+                        <thead>
+                            <tr style="background:#f0f0f0;">
+                                <th
+                  style="padding:6px;border:1px solid #000;"
+                >Product</th>
+                                <th style="padding:6px;border:1px solid #000;">Lot</th>
+                                <th
+                  style="padding:6px;border:1px solid #000;"
+                >Quantity</th>
+                                <th
+                  style="padding:6px;border:1px solid #000;"
+                >Expiry Date</th>
+                                <th
+                  style="padding:6px;border:1px solid #000;"
+                >Days to Expire</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+
+                            <t t-if="view_type == 'product_wise'">
+                                <t t-foreach="heading" t-as="product">
+                                    <tr style="background:#e8e8e8;">
+                                        <td
+                      colspan="5"
+                      style="padding:6px; border:1px solid #000; font-weight:bold; text-align:left;"
+                    >
+                                            <t t-esc="product['product']" />
+                                        </td>
+                                    </tr>
+
+                                    <t t-foreach="values" t-as="lot">
+                                        <t t-if="lot['product'] == product['product']">
+                                            <tr>
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['lot_name']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['product_qty']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['expiry_date']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['expiry_days']"
+                        />
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+
+
+                            <t t-if="view_type == 'location_wise'">
+                                <t t-foreach="heading" t-as="location">
+                                    <tr style="background:#e8e8e8;">
+                                        <td
+                      colspan="5"
+                      style="padding:6px; border:1px solid #000; font-weight:bold; text-align:left;"
+                    >
+                                            <t t-esc="location['location']" />
+                                        </td>
+                                    </tr>
+
+                                    <t t-foreach="values" t-as="lot">
+                                        <t
+                      t-if="lot['location'] == location['location']"
+                    >
+                                            <tr>
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['product']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['lot_name']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['product_qty']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['expiry_date']"
+                        />
+                                                <td
+                          style="border:1px solid #000; padding:6px;"
+                          t-esc="lot['expiry_days']"
+                        />
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+
+
+                            <t t-if="view_type == 'tracking_wise'">
+                                <t t-foreach="values" t-as="lot">
+                                    <tr>
+                                        <td
+                      style="border:1px solid #000; padding:6px;"
+                      t-esc="lot['product']"
+                    />
+                                        <td
+                      style="border:1px solid #000; padding:6px;"
+                      t-esc="lot['lot_name']"
+                    />
+                                        <td
+                      style="border:1px solid #000; padding:6px;"
+                      t-esc="lot['product_qty']"
+                    />
+                                        <td
+                      style="border:1px solid #000; padding:6px;"
+                      t-esc="lot['expiry_date']"
+                    />
+                                        <td
+                      style="border:1px solid #000; padding:6px;"
+                      t-esc="lot['expiry_days']"
+                    />
+                                    </tr>
+                                </t>
+                            </t>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </t>
+        </t>
+    </template>
+</odoo>

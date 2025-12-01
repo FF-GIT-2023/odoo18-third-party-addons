@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="product_batch_report_action_report" model="ir.actions.report">
+        <field name="name">Product Expiry PDF Report</field>
+        <field name="model">product.expiry.report.wiz</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ff_expiry_report.report_expiry_pdf</field>
+        <field name="report_file">ff_expiry_report.report_expiry_pdf</field>
+        <field name="attachment_use">True</field>
+    </record>
+</odoo>
