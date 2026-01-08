@@ -57,7 +57,10 @@ class StockMove(models.Model):
                 for line in lines_data[move.product_id.id]['order_lines']:
                     sum_of_lots = 0
                     for lot in line.pack_lot_ids.filtered(lambda l: l.lot_name):
-                        qty = 1 if line.product_id.tracking == 'serial' else line.qty * abs(line.uom_base_qty)
+                        if line.product_id.tracking == 'serial':
+                            qty = 1
+                        else:
+                            qty =  line.qty * abs(line.uom_base_qty) if line.uom_base_qty else line.qty
                         ml_vals = dict(move._prepare_move_line_vals(qty))
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
@@ -90,7 +93,7 @@ class StockMove(models.Model):
                         if line.product_id.tracking == 'serial':
                             qty = 1
                         else:
-                            qty = line.qty * abs(line.uom_base_qty)
+                            qty = line.qty * abs(line.uom_base_qty) if line.uom_base_qty else line.qty
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
                             if existing_lot:
