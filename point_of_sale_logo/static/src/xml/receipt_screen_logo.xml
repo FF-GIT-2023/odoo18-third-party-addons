@@ -18,7 +18,20 @@
                  t-attf-src="/web/image?model=pos.config&amp;field=image&amp;id={{ this.env.services.pos.config.id }}"
                  style="width:10%"/>
         </xpath>
-
+        <xpath expr="//ReceiptHeader" position="after">
+            <t t-if="props.data.headerData.partner">
+                <t t-if="props.data.headerData.partner.name">
+                   <div>Customer:
+                        <t t-esc="props.data.headerData.partner.name" />
+                   </div>
+                </t>
+                <t t-if="props.data.headerData.partner.phone">
+                    <div>Phone:
+                        <t t-esc="props.data.headerData.partner.phone" />
+                    </div>
+                </t>
+            </t>
+        </xpath>
         <xpath expr="//div[hasclass('pos-receipt')]/div[3]" position="replace">
             <div class="pos-receipt-order-data">
                 <p>Powered by Smatek</p>
