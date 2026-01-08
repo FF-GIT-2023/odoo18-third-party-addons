@@ -33,6 +33,7 @@ patch(ControlButtons.prototype, {
     }
     if (uom_price){
         selectedLine.set_unit_price(uom_price.price);
+        selectedLine.uom_base_qty = uom_price.base_uom_qty;
         selectedLine.price_type = "manual";
         selectedLine.set_uom(uom_price.uom_id)
     }
