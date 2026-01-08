@@ -2,63 +2,73 @@
 # © 2025 ehuerta _at_ ixer.mx
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl-3.0.html).
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 
-class prod_tmpl_multi_uom(models.Model):
+class ProductTmplMultiUomPrice(models.Model):
     _name = 'product.tmpl.multi.uom.price'
-    _description = 'Product template multiple uom price'
+    _description = 'Product Template Multiple UoM Price'
 
     product_tmpl_id = fields.Many2one(
         'product.template',
-        'Product Template',
         required=True,
-        ondelete="cascade",
+        ondelete='cascade',
         readonly=True
     )
-    category_id = fields.Many2one(related='product_tmpl_id.uom_id.category_id', readonly=True )
-    uom_id = fields.Many2one('uom.uom',
-        string="Unit of Measure",
-        domain="[('category_id', '=', category_id)]",
-        required=True
+
+    category_id = fields.Many2one(
+        related='product_tmpl_id.uom_id.category_id',
+        readonly=True
     )
-    price = fields.Float('Price',
+
+    uom_id = fields.Many2one(
+        'uom.uom',
+        required=True,
+        domain="[('category_id', '=', category_id)]"
+    )
+
+    price = fields.Float(
+        string='Price',
         required=True,
         digits='Product Price'
     )
 
+    base_uom_qty = fields.Float(
+        string='UoM Quantity',
+        required=True,
+        help="How many base units this UoM represents"
+    )
+
+    _sql_constraints = [
+        (
+            'product_tmpl_uom_uniq',
+            'unique(product_tmpl_id, uom_id)',
+            'Each UoM must be unique per product template'
+        )
+    ]
+
 
     def _sync_price_to_variants(self):
-        ProductMultiUom = self.env['product.multi.uom.price']
-        variant_uom_keys = []
-        existing_prices_map = {}
+        VariantUom = self.env['product.multi.uom.price']
+
         for rec in self:
             for variant in rec.product_tmpl_id.product_variant_ids:
-                key = (variant.id, rec.uom_id.id)
-                variant_uom_keys.append(key)
-        if variant_uom_keys:
-            existing_prices = ProductMultiUom.search([
-                ('product_id', 'in', [v_id for v_id, _ in variant_uom_keys]),
-                ('uom_id', 'in', [u_id for _, u_id in variant_uom_keys])
-            ])
-            for price in existing_prices:
-                existing_prices_map[(price.product_id.id, price.uom_id.id)] = price
-        to_create = []
-        for rec in self:
-            for variant in rec.product_tmpl_id.product_variant_ids:
-                key = (variant.id, rec.uom_id.id)
-                existing = existing_prices_map.get(key)
-                if existing:
-                    if existing.price != rec.price:
-                        existing.price = rec.price
+                line = VariantUom.search([
+                    ('product_id', '=', variant.id),
+                    ('uom_id', '=', rec.uom_id.id)
+                ], limit=1)
+
+                vals = {
+                    'product_id': variant.id,
+                    'uom_id': rec.uom_id.id,
+                    'price': rec.price,
+                    'base_uom_qty': rec.base_uom_qty,
+                }
+
+                if line:
+                    line.write(vals)
                 else:
-                    to_create.append({
-                        'product_id': variant.id,
-                        'uom_id': rec.uom_id.id,
-                        'price': rec.price,
-                    })
-        if to_create:
-            ProductMultiUom.create(to_create)
+                    VariantUom.create(vals)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -71,56 +81,56 @@ class prod_tmpl_multi_uom(models.Model):
         self._sync_price_to_variants()
         return res
 
-    _sql_constraints = [
-        ('product_tmpl_uom_uniq',
-         'UNIQUE(product_tmpl_id, uom_id)',
-         'Each Unit of Measure must be unique per product template.')
-    ]
 
 
-class prod_multi_uom(models.Model):
+class ProductMultiUomPrice(models.Model):
     _name = 'product.multi.uom.price'
     _inherit = ['pos.load.mixin']
-    _description = 'Product variant multiple uom price'
+    _description = 'Product Variant Multiple UoM Price'
 
     product_id = fields.Many2one(
         'product.product',
-        'Product variant',
         required=True,
-        ondelete="cascade",
+        ondelete='cascade',
         readonly=True
     )
-    category_id = fields.Many2one(related='product_id.uom_id.category_id', readonly=True )
-    uom_id = fields.Many2one('uom.uom',
-        string="Unit of Measure",
-        domain="[('category_id', '=', category_id)]",
-        required=True
+
+    category_id = fields.Many2one(
+        related='product_id.uom_id.category_id',
+        readonly=True
     )
-    price = fields.Float('Price',
+
+    uom_id = fields.Many2one(
+        'uom.uom',
+        required=True,
+        domain="[('category_id', '=', category_id)]"
+    )
+
+    price = fields.Float(
+        string='Price',
         required=True,
         digits='Product Price'
     )
 
+    base_uom_qty = fields.Float(
+        string='UoM Quantity',
+        required=True
+    )
 
-
-    @api.model
-    def _load_pos_self_data_fields(self, config_id):
-        return ['id', 'product_id', 'uom_id', 'price']
-
-    @api.model
-    def _load_pos_self_data_domain(self, data):
-        return self._load_pos_data_domain(data)
-    
-    def _load_pos_data(self, data):
-        domain = self._load_pos_self_data_domain(data)
-        fields = self._load_pos_self_data_fields(data['pos.config']['data'][0]['id'])
-        return {
-            'data': self.search_read(domain, fields, load=False),
-            'fields': fields,
-        }
-    
     _sql_constraints = [
-        ('product_variant_uom_uniq',
-         'UNIQUE(product_id, uom_id)',
-         'Each Unit of Measure must be unique per product variant.')
+        (
+            'product_variant_uom_uniq',
+            'unique(product_id, uom_id)',
+            'Each UoM must be unique per product variant'
+        )
     ]
+
+
+    def _load_pos_self_data_fields(self, config_id):
+        return [
+            'id',
+            'product_id',
+            'uom_id',
+            'price',
+            'base_uom_qty'
+        ]

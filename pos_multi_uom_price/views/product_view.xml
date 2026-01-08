@@ -14,6 +14,7 @@
                 <field name="multi_uom_price_ids" nolabel="1" colspan="2">
                             <list editable="bottom">
                                 <field name="uom_id"/>
+                                <field name="base_uom_qty"/>
                                 <field name="price"/>
                             </list>
                 </field>
@@ -31,6 +32,7 @@
                 <field name="multi_uom_price_ids" nolabel="1" colspan="2">
                             <list editable="bottom">
                                 <field name="uom_id"/>
+                                <field name="base_uom_qty"/>
                                 <field name="price"/>
                             </list>
                 </field>

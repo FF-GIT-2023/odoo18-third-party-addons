@@ -14,11 +14,16 @@ class PosOrderLine(models.Model):
 
     product_uom_id = fields.Many2one('uom.uom', string='Product UoM', related='')
     unit_cost = fields.Float(string='Unit cost', compute='_compute_unit_cost', digits='Product Price')
+    uom_base_qty = fields.Float(
+        string="UoM Base Quantity",
+        default=1.0,
+        help="How many base units this UoM represents"
+    )
 
     @api.model
     def _load_pos_data_fields(self, config_id):
         params = super()._load_pos_data_fields(config_id)
-        params += ['product_uom_id']
+        params += ['product_uom_id', 'uom_base_qty']
         return params
     
     @api.depends('price_subtotal', 'total_cost')

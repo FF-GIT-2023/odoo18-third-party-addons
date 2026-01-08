@@ -9,8 +9,11 @@
     <field name="model">pos.order</field>
     <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
     <field name="arch" type="xml">
+        <xpath expr="//page[@name='products']/field[@name='lines']/list/field[@name='qty']" position="after">
+            <field name="uom_base_qty" />
+        </xpath>
 	    <xpath expr="//page[@name='products']/field[@name='lines']/list/field[@name='total_cost']" position="before">
-            <field name="unit_cost" invisible="not is_total_cost_computed" optional="hide" widget="monetary"/>		
+            <field name="unit_cost" invisible="not is_total_cost_computed" optional="hide" widget="monetary"/>
         </xpath>
     </field>
 </record>	
