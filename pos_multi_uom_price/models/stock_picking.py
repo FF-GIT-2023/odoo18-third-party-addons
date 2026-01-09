@@ -107,12 +107,14 @@ class StockPicking(models.Model):
     def _prepare_stock_move_vals(self, first_line, order_lines):
         res = super()._prepare_stock_move_vals(first_line, order_lines)
 
-        base_uom = order_lines.product_uom_id.id
-        qty = sum(order_lines.mapped('qty'))
+        quantity = sum(
+            line.qty * (line.uom_base_qty or 1.0)
+            for line in order_lines
+        )
 
         res.update({
-            'product_uom': base_uom,
-            'product_uom_qty': qty,
+            'product_uom': first_line.product_id.uom_id.id,
+            'product_uom_qty': quantity,
         })
         return res
 
