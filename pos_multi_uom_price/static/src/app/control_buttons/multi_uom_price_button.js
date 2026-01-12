@@ -31,12 +31,13 @@ patch(ControlButtons.prototype, {
                  }))
         });
     }
-    if (uom_price){
-        selectedLine.set_unit_price(uom_price.price);
+    if (uom_price) {
+        selectedLine.set_uom(uom_price.uom_id);
         selectedLine.uom_base_qty = uom_price.base_uom_qty;
+        selectedLine.set_unit_price(uom_price.price);
         selectedLine.price_type = "manual";
-        selectedLine.set_uom(uom_price.uom_id)
+        selectedLine._is_price_manually_set = true;
+        selectedLine.setDirty();
     }
-
     },
 });
