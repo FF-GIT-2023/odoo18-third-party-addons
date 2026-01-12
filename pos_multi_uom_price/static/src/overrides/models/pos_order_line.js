@@ -96,7 +96,11 @@ patch(PosOrderline.prototype, {
         } else {
             this.qty = quant;
         }
-        if (!keep_price && this.price_type === "original") {
+        if (
+            !keep_price &&
+            this.price_type === "original" &&
+            !this._is_price_manually_set
+        ) {
             this.set_unit_price(
                 this.product_id.get_price(
                     this.order_id.pricelist_id,
@@ -105,7 +109,6 @@ patch(PosOrderline.prototype, {
                 )
             );
         }
-
         this.setDirty();
         return true;
     },
