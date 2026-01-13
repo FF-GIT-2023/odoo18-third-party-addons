@@ -6,38 +6,44 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
 import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
 import { patch } from "@web/core/utils/patch";
-import { makeAwaitable, ask } from "@point_of_sale/app/store/make_awaitable_dialog";
+import { makeAwaitable } from "@point_of_sale/app/store/make_awaitable_dialog";
 import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
 
 patch(ControlButtons.prototype, {
     async onClickUOMSelector() {
-	const selectedLine = this.currentOrder.get_selected_orderline();
-    if (!selectedLine) {
-        this.dialog.add(AlertDialog, {
-            title: _t("No product"),
-            body: _t("Select a product line first."),
-        });
-        return;
-    }
-    let uom_price = null;
-    if (this.pos.models["product.multi.uom.price"].filter(rec => rec.product_id.id === selectedLine.product_id.id ).length ) {
-        uom_price = await makeAwaitable(this.dialog, SelectionPopup, {
+        const selectedLine = this.currentOrder.get_selected_orderline();
+        if (!selectedLine) {
+            this.dialog.add(AlertDialog, {
+                title: _t("No product"),
+                body: _t("Select a product line first."),
+            });
+            return;
+        }
+
+        const uomPrices = this.pos.models["product.multi.uom.price"]
+            .filter(r => r.product_id.id === selectedLine.product_id.id);
+
+        if (!uomPrices.length) {
+            return;
+        }
+
+        const uom_price = await makeAwaitable(this.dialog, SelectionPopup, {
             title: _t("UOM"),
-            list: this.pos.models["product.multi.uom.price"].filter((rec) => rec.product_id.id === selectedLine.product_id.id).map((rec) => (
-                {id: rec.uom_id.id,
-                 label: rec.uom_id.name,
-                 item: rec,
-                 isSelected: true,
-                 }))
+            list: uomPrices.map(rec => ({
+                id: rec.uom_id.id,
+                label: rec.uom_id.name,
+                item: rec,
+                isSelected: rec.uom_id.id === selectedLine.product_uom_id?.id,
+            })),
         });
-    }
-    if (uom_price) {
-        selectedLine.set_uom(uom_price.uom_id);
-        selectedLine.uom_base_qty = uom_price.base_uom_qty;
-        selectedLine.set_unit_price(uom_price.price);
-        selectedLine.price_type = "manual";
-        selectedLine._is_price_manually_set = true;
-        selectedLine.setDirty();
-    }
+
+        if (uom_price) {
+            selectedLine.set_uom(uom_price.uom_id);
+            selectedLine.uom_base_qty = uom_price.base_uom_qty;
+            selectedLine.set_unit_price(uom_price.price);
+            selectedLine.price_type = "manual";
+            selectedLine._is_price_manually_set = true;
+            selectedLine.setDirty();
+        }
     },
 });
