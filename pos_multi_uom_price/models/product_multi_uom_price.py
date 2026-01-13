@@ -39,6 +39,12 @@ class ProductTmplMultiUomPrice(models.Model):
         help="How many base units this UoM represents"
     )
 
+    @api.onchange('base_uom_qty')
+    def _onchange_base_uom_qty(self):
+        for rec in self:
+            if rec.product_tmpl_id and rec.base_uom_qty:
+                rec.price = rec.product_tmpl_id.list_price * rec.base_uom_qty
+
     _sql_constraints = [
         (
             'product_tmpl_uom_uniq',
