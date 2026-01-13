@@ -91,15 +91,15 @@ patch(PosOrderline.prototype, {
             this.qty = quant;
         }
 
-//        if (!keep_price && this.price_type === "original") {
-//            this.set_unit_price(
-//                this.product_id.get_price(
-//                    this.order_id.pricelist_id,
-//                    this.get_quantity(),
-//                    this.get_price_extra()
-//                )
-//            );
-//        }
+        if (!keep_price && this.price_type === "original") {
+            this.set_unit_price(
+                this.product_id.get_price(
+                    this.order_id.pricelist_id,
+                    this.get_quantity(),
+                    this.get_price_extra()
+                )
+            );
+        }
 
         this.setDirty();
         return true;
