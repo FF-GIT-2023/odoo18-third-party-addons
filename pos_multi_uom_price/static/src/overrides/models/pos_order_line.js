@@ -5,7 +5,7 @@
 import { PosOrderline } from "@point_of_sale/app/models/pos_order_line";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
-import { formatFloat, roundPrecision } from "@web/core/utils/numbers";
+import { formatFloat, roundPrecision, roundDecimals } from "@web/core/utils/numbers";
 
 patch(PosOrderline.prototype, {
     setup() {
@@ -21,6 +21,12 @@ patch(PosOrderline.prototype, {
     },
      set_uom(uom_id) {
         this.product_uom_id = uom_id;
+    },
+    get_unit_price() {
+        const digits = this.models["decimal.precision"].find(
+            (dp) => dp.name === "Product Price"
+        ).digits;
+        return window.parseFloat(roundDecimals(this.price_unit || 0, digits).toFixed(digits));
     },
     get quantityStr() {
         let qtyStr = "";
