@@ -237,6 +237,9 @@ class ProfitLossReport(models.TransientModel):
                 float(entry['amount'].replace(',', '')) for account_type in
                 ['expense', 'expense_depreciation'] for entry in
                 account_entries[account_type][0])
+            if total_expense < 0:
+                total_expense = total_expense * -1
+
             total_current_asset = sum(
                 float(entry['amount'].replace(',', '')) for account_type in
                 ['asset_receivable', 'asset_current', 'asset_cash',
@@ -262,6 +265,7 @@ class ProfitLossReport(models.TransientModel):
                 float(entry['amount'].replace(',', '')) for account_type in
                 ['equity'] for entry in account_entries[account_type][0])
             total = total_liability + total_equity
+
             data = {
                 'total': total_income - total_expense,
                 'total_expense': "{:,.2f}".format(total_expense),
@@ -302,6 +306,8 @@ class ProfitLossReport(models.TransientModel):
                                     'equity_unaffected']:
                     amount = -(sum(filtered_lines.mapped('debit')) - sum(
                         filtered_lines.mapped('credit')))
+
+
                 else:
                     amount = sum(filtered_lines.mapped('debit')) - sum(
                         filtered_lines.mapped('credit'))
