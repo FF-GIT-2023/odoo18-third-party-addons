@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Backend Glassmorphism Theme</title>
+    <style>
+      :root {
+        --ink: #0f172a;
+        --muted: #475569;
+        --accent: #ec4899;
+        --soft: #f8fafc;
+      }
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: #ffffff;
+        margin: 24px;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 12px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 24px 0 8px;
+      }
+      p {
+        margin: 0 0 10px;
+        color: var(--muted);
+      }
+      ul {
+        margin: 0 0 10px 18px;
+        color: var(--muted);
+      }
+      .badge {
+        display: inline-block;
+        background: var(--soft);
+        border: 1px solid #e2e8f0;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        color: var(--ink);
+        margin-right: 6px;
+      }
+      .accent {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .section {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 14px 16px;
+        background: #fafafa;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Backend Glassmorphism Theme</h1>
+    <p>
+      A modern <span class="accent">glassmorphism-inspired</span> theme for the Odoo
+      backend. It brings translucent surfaces, soft blur, and refined depth while
+      keeping the interface readable and calm.
+    </p>
+    <div class="section">
+      <span class="badge">Odoo 18 Community</span>
+      <span class="badge">Backend Theme</span>
+      <span class="badge">No Data Changes</span>
+    </div>
+
+    <h2>Key Features</h2>
+    <ul>
+      <li>Glassy background with pastel gradients and depth.</li>
+      <li>Translucent panels for control panel, list, kanban, and chatter.</li>
+      <li>Refined buttons, inputs, and dropdowns with soft highlights.</li>
+      <li>Improved search autocomplete and popover readability.</li>
+      <li>Glass-styled statusbar and notebook tabs.</li>
+    </ul>
+
+    <h2>Screenshot</h2>
+    <img src="main_screenshot.png" class="screenshot" alt="Glassmorphism theme screenshot" />
+
+    <h2>Installation</h2>
+    <ul>
+      <li>Copy the module into your custom addons path.</li>
+      <li>Update Apps list and install "Backend Glassmorphism Theme".</li>
+      <li>Refresh the browser with assets debug if needed.</li>
+    </ul>
+
+    <h2>Configuration</h2>
+    <p>
+      The theme is enabled once installed. You can tweak colors and transparency
+      from the SCSS files:
+    </p>
+    <ul>
+      <li><code>static/src/scss/glass_variables.scss</code> for Odoo variables.</li>
+      <li><code>static/src/scss/glassmorphism.scss</code> for component styling.</li>
+    </ul>
+
+    <h2>Support</h2>
+    <p>
+      If you need adjustments for a specific view or component, update the SCSS
+      or contact the module author.
+    </p>
+  </body>
+</html>

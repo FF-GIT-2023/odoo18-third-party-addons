@@ -1,0 +1,579 @@
+body.o_web_client {
+  --glass-bg: rgba(255, 255, 255, 0.4);
+  --glass-bg-strong: rgba(255, 255, 255, 0.32);
+  --glass-border: rgba(255, 255, 255, 0.38);
+  --glass-border-strong: rgba(255, 255, 255, 0.52);
+  --glass-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.12));
+  --glass-shadow: 0 26px 60px rgba(15, 23, 42, 0.18), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  --glass-radius: 18px;
+  --glass-blur: 32px;
+  --glass-text: #0f172a;
+  --glass-text-muted: #64748b;
+  --glass-accent: #f472b6;
+  --glass-accent-2: #ec4899;
+  --o-brand-primary: #f472b6;
+  --o-brand-odoo: #f472b6;
+  --o-action: #f472b6;
+  --o-main-link-color: #ec4899;
+  background: url("/web_theme_glassmorphism/static/src/img/glassmorphism-background.png") center/cover no-repeat fixed;
+  color: var(--glass-text);
+
+  .o_web_client,
+  .o_action_manager,
+  .o_content {
+    background: transparent;
+  }
+
+  .o_content,
+  .o_control_panel,
+  .o_form_view,
+  .o_list_view,
+  .o_kanban_view,
+  .o-mail-ChatterContainer {
+    color: var(--glass-text);
+  }
+
+  a {
+    color: var(--glass-accent);
+
+    &:hover {
+      color: var(--glass-accent-2);
+    }
+  }
+
+  .o_main_navbar {
+    background-color: rgba(255, 255, 255, 0.22) !important;
+    background-image: var(--glass-highlight) !important;
+    border-bottom: 1px solid var(--glass-border-strong) !important;
+    box-shadow: 0 24px 52px rgba(15, 23, 42, 0.18), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    color: var(--glass-text) !important;
+    --NavBar-brand-color: #0f172a;
+    --NavBar-brand-hover-color: #111827;
+    --NavBar-entry-backgroundColor: transparent;
+    --NavBar-entry-hover-backgroundColor: transparent;
+    --NavBar-entry-active-backgroundColor: transparent;
+
+    .o_menu_sections a,
+    .o_menu_systray a,
+    button,
+    .dropdown-toggle {
+      color: var(--glass-text) !important;
+    }
+
+    .o_menu_brand,
+    .o_navbar_breadcrumbs,
+    .o_navbar_breadcrumbs .btn {
+      color: #0f172a !important;
+    }
+
+    .o_menu_sections {
+      .o_nav_entry,
+      .o_nav_entry > a,
+      .dropdown-toggle,
+      .dropdown-toggle:hover,
+      .dropdown-toggle:focus,
+      .show > .dropdown-toggle,
+      .o_nav_entry.active,
+      .o_nav_entry.active > a {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+      .o_nav_entry,
+      .dropdown-toggle {
+        transition: color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+      }
+
+      .o_nav_entry:hover,
+      .o_nav_entry:hover > a,
+      .dropdown-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.28) !important;
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.12)) !important;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
+        transform: translateY(-1px);
+      }
+    }
+
+    .o_menu_sections a:hover,
+    .o_menu_systray a:hover,
+    button:hover,
+    .dropdown-toggle:hover {
+      color: #111827 !important;
+    }
+  }
+
+  .o_control_panel,
+  .o_searchview,
+  .o_form_sheet,
+  .o_kanban_view .o_kanban_record,
+  .o_dialog .modal-content,
+  .o_popover {
+    background-color: var(--glass-bg);
+    background-image: var(--glass-highlight);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .o_form_sheet {
+    background: transparent;
+  }
+
+  .o-mail-ChatterContainer {
+    background-color: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 24px 52px rgba(15, 23, 42, 0.2);
+
+    .o-mail-Chatter-top {
+      background-color: rgba(255, 255, 255, 0.38);
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.18);
+    }
+  }
+
+  .o_control_panel {
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 0;
+    z-index: 2;
+
+    .o_breadcrumb,
+    .breadcrumb,
+    .o_breadcrumb a,
+    .breadcrumb a {
+      background: transparent !important;
+    }
+  }
+
+  .o_searchview,
+  .o_cp_searchview .o_searchview {
+    background-color: var(--glass-bg-strong);
+    background-image: var(--glass-highlight);
+    border-color: var(--glass-border);
+  }
+
+  .o_searchview {
+    .o_searchview_input {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+
+      &::placeholder {
+        color: rgba(15, 23, 42, 0.6);
+      }
+    }
+  }
+
+  .o_cp_searchview {
+    .o_searchview_input {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+
+  .o_form_sheet_bg {
+    background: transparent;
+    z-index: 10;
+  }
+
+  .bg-view {
+    background-color: transparent !important;
+  }
+
+  .o-mail-DiscussSidebar {
+    background-color: rgba(255, 255, 255, 0.18);
+    background-image: var(--glass-highlight);
+    border-right: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+  }
+
+  .o-mail-discussSidebarBgColor {
+    background-color: rgba(255, 255, 255, 0.16);
+    background-image: var(--glass-highlight);
+  }
+
+  .o-mail-Discuss-header {
+    background-color: rgba(255, 255, 255, 0.24);
+    background-image: var(--glass-highlight);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+  }
+
+  .o_spreadsheet_dashboard_action {
+    background-color: rgba(255, 255, 255, 0.14);
+    background-image: var(--glass-highlight);
+
+    .o_renderer .o-spreadsheet .o-grid {
+      background-color: rgba(255, 255, 255, 0.12);
+      background-image: var(--glass-highlight);
+    }
+  }
+
+  .o_kanban_view,
+  .o_list_view,
+  .o_form_view {
+    background: transparent;
+  }
+
+  .o_list_view {
+    //background-color: rgba(255, 255, 255, 0.06);
+    //background-image: var(--glass-highlight);
+    //border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0;
+    //box-shadow: var(--glass-shadow);
+
+    .o_list_table {
+      background-color: transparent;
+
+      thead th {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-bottom: 1px solid var(--glass-border-strong);
+        color: var(--glass-text);
+        backdrop-filter: blur(calc(var(--glass-blur) - 8px));
+      }
+
+      tbody tr {
+        background-color: rgba(255, 255, 255, 0.06);
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.12);
+        }
+      }
+
+      td,
+      th {
+        border-color: rgba(148, 163, 184, 0.22);
+      }
+    }
+  }
+
+  .o_kanban_view {
+    background-color: rgba(255, 255, 255, 0.06);
+    background-image: var(--glass-highlight);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0;
+    box-shadow: var(--glass-shadow);
+
+    .o_kanban_record {
+      background-color: rgba(255, 255, 255, 0.1);
+      background-image: var(--glass-highlight);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 0;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 24px 48px rgba(15, 23, 42, 0.22);
+      }
+    }
+
+    .o_kanban_record.o_kanban_ghost,
+    .o_kanban_record.o_ghost,
+    .o_kanban_ghost {
+      background-color: rgba(255, 255, 255, 0.08);
+      background-image: none;
+      border: 1px dashed rgba(255, 255, 255, 0.5);
+      box-shadow: none;
+    }
+
+    .o_kanban_record.o_dragged,
+    .o_dragged {
+      background-color: rgba(255, 255, 255, 0.2);
+      background-image: var(--glass-highlight);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 28px 60px rgba(15, 23, 42, 0.24);
+    }
+
+    .o_kanban_group {
+      --KanbanGroup-background: rgba(255, 255, 255, 0.06);
+      --KanbanColumn__highlight-background: rgba(255, 255, 255, 0.12);
+
+      &.o_kanban_hover {
+        --KanbanGroup-background: rgba(255, 255, 255, 0.18);
+        --KanbanColumn__highlight-background: rgba(255, 255, 255, 0.22);
+      }
+    }
+  }
+
+  .o_searchview_autocomplete {
+    background-color: rgba(255, 255, 255, 0.7);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.4));
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 28px 60px rgba(15, 23, 42, 0.24);
+  }
+
+  .dropdown-menu,
+  .o-autocomplete--dropdown-menu,
+  .ui-autocomplete {
+    background-color: transparent;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.45));
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 24px 52px rgba(15, 23, 42, 0.22);
+  }
+
+  .o_form_view {
+    .o_field_x2many {
+      .o_list_view {
+        background-color: rgba(255, 255, 255, 0.02);
+        border-radius: 0;
+        box-shadow: none;
+
+        .o_list_table {
+          background-color: transparent;
+
+          thead th {
+            background-color: rgba(255, 255, 255, 0.08);
+          }
+
+          tbody tr {
+            background-color: rgba(255, 255, 255, 0.03);
+
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.07);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .o_notebook {
+    .nav-tabs {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+      border-radius: 10px 10px 0 0;
+      padding: 6px 8px;
+
+      .nav-link {
+        border: 1px solid transparent;
+        border-radius: 8px 8px 0 0;
+        color: rgba(236, 72, 153, 0.8);
+        background: transparent;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+
+        &:hover {
+          color: #ec4899;
+          background-color: rgba(255, 255, 255, 0.22);
+          box-shadow: 0 10px 20px rgba(236, 72, 153, 0.16);
+          transform: translateY(-1px);
+        }
+
+        &.active {
+          color: #ffffff;
+          background: linear-gradient(135deg, rgba(244, 114, 182, 0.9), rgba(236, 72, 153, 0.85));
+          border-color: rgba(255, 255, 255, 0.6);
+          box-shadow: 0 14px 28px rgba(236, 72, 153, 0.28);
+        }
+      }
+    }
+  }
+
+  .o_form_statusbar,
+  .o_field_statusbar {
+    > .o_statusbar_status {
+      --o-statusbar-radius: 0.45rem;
+      --o-statusbar-border-width: 1px;
+      --o-statusbar-caret-width: 0.9em;
+      --o-statusbar-border: transparent;
+      --o-statusbar-background-hover: rgba(255, 255, 255, 0.24);
+      --o-statusbar-background-active: rgb(255, 0, 126);
+      --o-statusbar-border-active: transparent;
+
+      > .o_arrow_button {
+        position: relative;
+        z-index: 1;
+        color: var(--glass-accent);
+        background-color: rgba(255, 255, 255, 0.48);
+        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
+        box-shadow: 0 8px 18px rgba(236, 72, 153, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+
+        &:not(.o_first),
+        &:not(.o_last) {
+          &:after {
+            border-left-color: rgba(255, 255, 255, 0.8);
+          }
+        }
+
+        &:not(.d-none):disabled:not(.o_arrow_button_current) {
+          color: var(--glass-accent);
+        }
+
+        &.o_arrow_button_current:disabled,
+        &:active:not(.o_last) {
+          background-color: var(--o-statusbar-background-active);
+          background-image: linear-gradient(135deg, rgba(236, 72, 153, 0.7), rgba(236, 72, 153, 0.95));
+          border-color: var(--o-statusbar-border-active);
+          color: #ffffff;
+
+          &:after {
+            border-left-color: rgba(250, 77, 158, 0.95);
+          }
+
+          &, & + .btn {
+            &:before {
+              border-left-color: rgba(211, 63, 135, 0.95);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .o_input,
+  input,
+  textarea,
+  select,
+  .o_searchview_input,
+  .o_input input,
+  .o_input textarea,
+  .o_input select,
+  input.o_input,
+  textarea.o_input,
+  select.o_input {
+    background-color: rgba(255, 255, 255, 0.12);
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 48px;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    color: var(--glass-text);
+
+    &:focus {
+      border-color: rgba(236, 72, 153, 0.65);
+      box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .o_input::placeholder,
+  input::placeholder,
+  textarea::placeholder,
+  .o_input input::placeholder,
+  .o_input textarea::placeholder,
+  input.o_input::placeholder,
+  textarea.o_input::placeholder {
+    color: var(--glass-text-muted);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #eb53a6 0%, #fb4da9 100%) !important;
+    color: white;
+    border-color: transparent !important;
+    box-shadow: 0 14px 26px rgba(236, 72, 153, 0.24);
+
+    &:hover {
+      background: linear-gradient(135deg, #d7438c 0%, #d71f71 100%) !important;
+      color: white;
+      box-shadow: 0 20px 40px rgba(236, 72, 153, 0.45);
+      transform: translateY(-1px);
+    }
+  }
+
+  .btn-outline-primary {
+    color: var(--glass-accent-2) !important;
+    border-color: var(--glass-accent-2) !important;
+    background-color: transparent !important;
+
+    &:hover {
+      color: #ffffff !important;
+      background-color: rgba(244, 114, 182, 0.45) !important;
+      border-color: var(--glass-accent-2) !important;
+      box-shadow: 0 14px 30px rgba(236, 72, 153, 0.28);
+      transform: translateY(-1px);
+    }
+  }
+
+  .btn-secondary,
+  .btn-outline-secondary {
+    background-color: rgba(255, 255, 255, 0.65);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: var(--glass-accent-2);
+
+    &:hover {
+      color: var(--glass-accent-2);
+      background-color: rgba(255, 255, 255, 0.4);
+      border-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 16px 32px rgba(236, 72, 153, 0.24);
+      transform: translateY(-1px);
+    }
+
+    &:active,
+    &.active {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.18);
+    }
+  }
+
+  .btn-light {
+    background-color: rgba(255, 255, 255, 0.42);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: var(--glass-text);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.6);
+      border-color: rgba(255, 255, 255, 0.8);
+      color: #111827;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.16);
+      transform: translateY(-1px);
+    }
+
+    &:active,
+    &.active {
+      background-color: rgba(255, 255, 255, 0.52);
+      border-color: rgba(255, 255, 255, 0.85);
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.18);
+    }
+  }
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  body.o_web_client {
+    .o_searchview_autocomplete {
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 16px)) saturate(1.2);
+      backdrop-filter: blur(calc(var(--glass-blur) + 16px)) saturate(1.2);
+    }
+
+    .dropdown-menu,
+    .o-autocomplete--dropdown-menu,
+    .ui-autocomplete {
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 10px)) saturate(1.15);
+      backdrop-filter: blur(calc(var(--glass-blur) + 10px)) saturate(1.15);
+    }
+
+    .o_main_navbar {
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 10px)) saturate(1.35);
+      backdrop-filter: blur(calc(var(--glass-blur) + 10px)) saturate(1.35);
+    }
+
+    .o_main_navbar,
+    .o_searchview,
+    .o_form_sheet,
+    .o_kanban_view .o_kanban_record,
+    .o_dialog .modal-content,
+    .o_popover {
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+      backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+    }
+
+    .o-mail-ChatterContainer .o-mail-Chatter-top {
+      -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 12px)) saturate(1.2);
+      backdrop-filter: blur(calc(var(--glass-blur) + 12px)) saturate(1.2);
+    }
+
+  }
+}
+
+@media (max-width: 992px) {
+  body.o_web_client {
+    --glass-radius: 12px;
+
+    .o_form_sheet,
+    .o-mail-ChatterContainer {
+      border-radius: 12px;
+    }
+  }
+}
