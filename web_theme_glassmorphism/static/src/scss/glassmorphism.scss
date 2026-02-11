@@ -9,13 +9,22 @@ body.o_web_client {
   --glass-blur: 32px;
   --glass-text: #0f172a;
   --glass-text-muted: #64748b;
-  --glass-accent: #f472b6;
+  --glass-accent: #000;
   --glass-accent-2: #ec4899;
   --o-brand-primary: #f472b6;
   --o-brand-odoo: #f472b6;
   --o-action: #f472b6;
   --o-main-link-color: #ec4899;
-  background: url("/web_theme_glassmorphism/static/src/img/glassmorphism-background.png") center/cover no-repeat fixed;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  background: linear-gradient(
+      135deg,
+      #ff9ad5 0%,
+      #ff6fb1 40%,
+      #c77dff 100%
+  ) fixed;
+
+//   background: url("/web_theme_glassmorphism/static/src/img/glassmorphism-background.png") center/cover no-repeat fixed;
   color: var(--glass-text);
 
   .o_web_client,
