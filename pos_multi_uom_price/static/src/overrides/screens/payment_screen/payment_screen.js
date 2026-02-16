@@ -13,7 +13,11 @@ patch(PaymentScreen.prototype, {
             return;
         }
         const linesToRemove = this.currentOrder.lines.filter((line) => {
-            const rounding = line.product_uom_id.rounding;
+            const rounding =
+                line.product_uom_id?.rounding ||
+                line.product?.uom_id?.rounding ||
+                0.01;
+
             const decimals = Math.max(0, Math.ceil(-Math.log10(rounding)));
             return floatIsZero(line.qty, decimals);
         });
@@ -21,7 +25,6 @@ patch(PaymentScreen.prototype, {
             this.currentOrder.removeOrderline(line);
         }
         if (await this._isOrderValid(isForceValidate)) {
-            // remove pending payments before finalizing the validation
             const toRemove = [];
             for (const line of this.paymentLines) {
                 if (!line.is_done() || line.amount === 0) {
@@ -34,5 +37,5 @@ patch(PaymentScreen.prototype, {
             }
             await this._finalizeValidation();
         }
-    }
+    },
 });
