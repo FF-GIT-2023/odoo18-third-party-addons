@@ -114,7 +114,7 @@ class StockPicking(models.Model):
 
         res.update({
             'product_uom': first_line.product_uom_id.id,
-            'product_uom_qty': quantity,
+            'product_uom_qty': abs(quantity),
         })
         return res
 
