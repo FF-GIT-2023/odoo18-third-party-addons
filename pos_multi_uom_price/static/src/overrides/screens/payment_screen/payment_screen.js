@@ -13,11 +13,7 @@ patch(PaymentScreen.prototype, {
             return;
         }
         const linesToRemove = this.currentOrder.lines.filter((line) => {
-            const rounding =
-                line.product_uom_id?.rounding ||
-                line.product?.uom_id?.rounding ||
-                0.01;
-
+            const rounding = line.product_uom_id?.rounding ?? 0.01;
             const decimals = Math.max(0, Math.ceil(-Math.log10(rounding)));
             return floatIsZero(line.qty, decimals);
         });
@@ -37,5 +33,5 @@ patch(PaymentScreen.prototype, {
             }
             await this._finalizeValidation();
         }
-    },
+    }
 });

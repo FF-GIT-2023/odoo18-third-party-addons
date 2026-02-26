@@ -60,7 +60,7 @@ class StockMove(models.Model):
                         if line.product_id.tracking == 'serial':
                             qty = 1
                         else:
-                            qty =  line.qty * abs(line.uom_base_qty) if line.uom_base_qty else line.qty
+                            qty =  line.qty * abs(line.uom_base_qty) if line.uom_base_qty else abs(line.qty)
                         ml_vals = dict(move._prepare_move_line_vals(qty))
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
@@ -93,7 +93,7 @@ class StockMove(models.Model):
                         if line.product_id.tracking == 'serial':
                             qty = 1
                         else:
-                            qty = line.qty * abs(line.uom_base_qty) if line.uom_base_qty else line.qty
+                            qty = line.qty * abs(line.uom_base_qty) if line.uom_base_qty else abs(line.qty)
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
                             if existing_lot:
@@ -113,7 +113,7 @@ class StockPicking(models.Model):
         )
 
         res.update({
-            'product_uom': first_line.product_id.uom_id.id,
+            'product_uom': first_line.product_uom_id.id,
             'product_uom_qty': quantity,
         })
         return res
