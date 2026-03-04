@@ -60,7 +60,13 @@ class StockMove(models.Model):
                         if line.product_id.tracking == 'serial':
                             qty = 1
                         else:
-                            qty =  line.qty * abs(line.uom_base_qty) if line.uom_base_qty else abs(line.qty)
+                            base_qty = line.uom_base_qty
+                            if not base_qty and line.qty < 0:
+                                original_line = line.refunded_orderline_id
+                                if original_line:
+                                    base_qty = original_line.uom_base_qty
+                            base_qty = base_qty or 1.0
+                            qty = abs(line.qty) * abs(base_qty)
                         ml_vals = dict(move._prepare_move_line_vals(qty))
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
@@ -93,13 +99,18 @@ class StockMove(models.Model):
                         if line.product_id.tracking == 'serial':
                             qty = 1
                         else:
-                            qty = line.qty * abs(line.uom_base_qty) if line.uom_base_qty else abs(line.qty)
+                            base_qty = line.uom_base_qty
+                            if not base_qty and line.qty < 0:
+                                original_line = line.refunded_orderline_id
+                                if original_line:
+                                    base_qty = original_line.uom_base_qty
+                            base_qty = base_qty or 1.0
+                            qty = abs(line.qty) * abs(base_qty)
                         if existing_lots:
                             existing_lot = existing_lots.filtered_domain([('product_id', '=', line.product_id.id), ('name', '=', lot.lot_name)])
                             if existing_lot:
                                 move._update_reserved_quantity(qty, move.location_id, lot_id=existing_lot)
                                 continue
-
 
 class StockPicking(models.Model):
     _inherit='stock.picking'
@@ -107,14 +118,19 @@ class StockPicking(models.Model):
     def _prepare_stock_move_vals(self, first_line, order_lines):
         res = super()._prepare_stock_move_vals(first_line, order_lines)
 
-        quantity = sum(
-            line.qty * (line.uom_base_qty or 1.0)
-            for line in order_lines
-        )
+        total_quantity = 0.0
 
+        for line in order_lines:
+            base_qty = line.uom_base_qty
+            if not base_qty and line.qty < 0:
+                original_line = line.refunded_orderline_id
+                if original_line:
+                    base_qty = original_line.uom_base_qty
+            base_qty = base_qty or 1.0
+            total_quantity += abs(line.qty) * abs(base_qty)
         res.update({
             'product_uom': first_line.product_uom_id.id,
-            'product_uom_qty': abs(quantity),
+            'product_uom_qty': total_quantity,
         })
         return res
 
