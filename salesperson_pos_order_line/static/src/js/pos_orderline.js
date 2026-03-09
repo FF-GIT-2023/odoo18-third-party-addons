@@ -10,6 +10,10 @@ patch(PosOrderline.prototype, {
         this.rpc = rpc;
         },
      async get_salesperson(){
+      const tipProduct = this.config.tip_product_id;
+      if (this.product_id.id === tipProduct?.id){
+        return;
+      }
 
       if (typeof this.id !='string'){
               const data = await rpc("/get_pos_sales_person", {
@@ -21,13 +25,16 @@ patch(PosOrderline.prototype, {
         }
      }
     },
-     getDisplayData() {
-        this.get_salesperson()
+    getDisplayData() {
+        const tipProduct = this.config.tip_product_id;
+        if (this.product_id.id !== tipProduct?.id) {
+            this.get_salesperson();
+        }
         return {
             ...super.getDisplayData(),
-            salesperson:this.salesperson,
+            salesperson: this.salesperson || "",
+            tip_amount: this.tip_amount || 0,
         };
-
     },
 
 });

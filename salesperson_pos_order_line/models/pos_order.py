@@ -19,7 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class PosOrderLine(models.Model):
@@ -28,3 +28,10 @@ class PosOrderLine(models.Model):
 
     user_id = fields.Many2one('res.users', string='Salesperson',
                               help="You can see salesperson here")
+    tip_amount = fields.Float(string="Tip Amount")
+
+    @api.model
+    def _load_pos_data_fields(self, config_id):
+        params = super()._load_pos_data_fields(config_id)
+        params += ['user_id','tip_amount']
+        return params

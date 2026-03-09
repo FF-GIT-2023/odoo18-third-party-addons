@@ -10,6 +10,7 @@
             <xpath expr="/form/sheet/notebook/page/field[@name='lines']/list/field[@name='full_product_name']"
                    position="after">
                 <field name="user_id"/>
+                <field name="tip_amount"/>
             </xpath>
         </field>
     </record>

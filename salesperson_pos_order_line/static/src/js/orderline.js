@@ -10,6 +10,7 @@ Orderline.props = {
         ...Orderline.props.line.shape,
             salesperson: { type: String, optional: true },
             user_id:{ type: Number, optional: true },
+            tip_amount:{ type: Number, optional: true },
         }
     }
 }
