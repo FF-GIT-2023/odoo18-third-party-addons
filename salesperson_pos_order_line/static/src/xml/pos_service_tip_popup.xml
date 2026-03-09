@@ -1,0 +1,63 @@
+<templates id="template" xml:space="preserve">
+
+<t t-name="salesperson_pos_order_line.TipPopup">
+    <Dialog title="'Add Tip'">
+
+        <div class="modal-body">
+
+            <table class="table table-sm table-striped">
+
+                <thead>
+                    <tr class="border-bottom">
+                        <th>Service</th>
+                        <th>Salesperson</th>
+                        <th>Tip Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <t t-foreach="state.services" t-as="service" t-key="service.line.id">
+                        <tr>
+                            <td>
+                                <t t-esc="service.product"/>
+                            </td>
+
+                            <td>
+                                <t t-esc="service.salesperson"/>
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    style="width:120px"
+                                    t-model="service.amount"
+                                    min="0"
+                                />
+                            </td>
+                        </tr>
+                    </t>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <t t-set-slot="footer">
+
+            <button class="btn btn-primary" t-on-click="confirm">
+                Confirm
+            </button>
+
+            <button class="btn btn-secondary" t-on-click="cancel">
+                Cancel
+            </button>
+
+        </t>
+
+    </Dialog>
+</t>
+
+</templates>
