@@ -43,12 +43,6 @@
                     <script>
                         function generateBarcode() {
                             JsBarcode("#barcode", "<t t-esc='getBarcodeValue'/>", {
-                                format: "CODE128",
-                                displayValue: true,
-                                height: 40,
-                                width: 2,
-                                margin: 10,
-                                fontSize: 14
                             });
                         }
                     </script>
