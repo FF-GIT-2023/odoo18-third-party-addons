@@ -21,10 +21,14 @@
 
         <xpath expr="//div[hasclass('pos-receipt')]/div[3]" position="replace">
             <div class="pos-receipt-order-data">
-                <p>Powered by Smatek</p>
-                <div t-esc="props.data.name"/>
-                <div id="order-date" t-esc="props.data.date"/>
-                <div class="barcode-area text-center" style="margin-top: 10px;">
+                <span>Powered by Smatek</span><br/>
+                <span t-esc="props.data.name"/><br/>
+                <span id="order-date" t-esc="props.data.date"/><br/>
+                <div class="qrcode text-center">
+                    <img t-att-src="'/point_of_sale_logo/static/src/img/jannat_feedback_qr.jpeg'"
+                         style="width:120px; height:120px;"/>
+                </div>
+                <div class="barcode-area text-center">
                     <svg id="barcode" style="box-shadow: 0 0 20px rgba(0,139,253,0.25); width: 300px; margin: 30px 0px 30px 0px;"/>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js" onload="generateBarcode()"/>
                     <script style="text-align:center">
