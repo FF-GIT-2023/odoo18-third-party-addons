@@ -28,22 +28,6 @@
                     <img t-att-src="'/point_of_sale_logo/static/src/img/jannat_feedback_qr.jpeg'"
                          style="width:120px; height:120px;"/>
                 </div>
-                <div class="barcode-area text-center">
-                    <svg id="barcode" style="box-shadow: 0 0 20px rgba(0,139,253,0.25); width: 300px; margin: 30px 0px 30px 0px;"/>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js" onload="generateBarcode()"/>
-                    <script style="text-align:center">
-                        function generateBarcode() {
-                            JsBarcode("#barcode", "<t t-esc='getBarcodeValue'/>", {
-                                format: "CODE128",
-                                displayValue: true,
-                                height: 40,
-                                width: 2,
-                                margin: 10,
-                                fontSize: 14
-                            });
-                        }
-                    </script>
-                </div>
             </div>
         </xpath>
     </t>
