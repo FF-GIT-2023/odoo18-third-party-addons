@@ -5,7 +5,10 @@
     "category": "pos",
     "author": "ForeFront Technologies",
     "depends": ["base", "point_of_sale"],
-    "data": [],
+    "data": [
+        'security/ir.model.access.csv',
+        'views/scale_value_view.xml',
+    ],
     "assets": {
         "point_of_sale._assets_pos":[
             "ff_weight_reading/static/src/js/*",
