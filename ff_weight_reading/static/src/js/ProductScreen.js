@@ -44,7 +44,7 @@ patch(ProductScreen.prototype, {
                 console.log("Weight from RPC:", weight);
 
                 if (weight && orderline) {
-                    orderline.set_quantity(Number(parseFloat(weight).toFixed(3)));
+                    orderline.set_quantity(Number(parseFloat(weight)));
                 }
 
             } catch (err) {
