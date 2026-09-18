@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_insight,ai.insight,model_ai_insight,,1,1,1,1
+access_ai_configuration,ai.configuration,model_ai_configuration,,1,1,1,1
