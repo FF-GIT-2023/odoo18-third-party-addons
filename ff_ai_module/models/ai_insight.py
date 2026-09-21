@@ -54,12 +54,39 @@ class AIPrompt(models.Model):
             }
             stock_lot.append(lot_data)
 
+        partner_list = []
+        partner_recs = self.env['res.partner'].with_company(self.env.company).search([])
+        for partner in partner_recs:
+            partner_data = {
+                'partner_name': partner.name,
+                'partner_phone': partner.phone,
+                'partner_mobile': partner.mobile,
+                'partner_email': partner.email,
+                'partner_address': partner.street
+            }
+            partner_list.append(partner_data)
+
         sale_orders = self.env['sale.order'].with_company(self.env.company).search([('state', 'in', ['sale', 'done'])])
         sale_list = []
         sales_tax_list=[]
-        for sale in sale_orders:
+        for sale in sale_orders.order_line:
+            sale_data = {
+                'sale_order_name': sale.order_id.name,
+                'Order_date': sale.order_id.date_order,
+                'partner_name': sale.order_id.partner_id.name,
+                'sale_order_product': sale.product_template_id.name,
+                'sale_order_product_quantity': sale.product_uom_qty,
+                'sale_order_product_delivered_quantity': sale.qty_delivered,
+                'sale_order_invoiced_quantity': sale.qty_invoiced,
+                'sale_order_product_uom': sale.product_uom,
+                'sale_order_unit_price': sale.price_unit,
+                'sale_order_product_price_total': sale.price_subtotal,
+                'sale_order_total_untaxed_amount': sale.order_id.amount_untaxed,
+                'sale_order_total_tax_amount': sale.order_id.amount_tax,
+                'sale_order_total_amount_order': sale.order_id.amount_total
+            }
             sales_tax_list.append(sale.amount_tax)
-            sale_list.append(sale.name)
+            sale_list.append(sale_data)
         total_sales = sum(sale_orders.mapped('amount_untaxed'))
 
         pos_list =[]
@@ -122,7 +149,7 @@ class AIPrompt(models.Model):
         --- ODOO SYSTEM DATA CONTEXT ---
         Product data: {product_list}
         Stock Lot data: {stock_lot}
-        Sale Order: {sale_list}
+        Sale Orders: {sale_list}
         sales tax: {sales_tax_list}
         Total Confirmed Sales Amount (Untaxed): {total_sales:.2f}
         purchase tax: {purchase_tax_list}
@@ -133,6 +160,7 @@ class AIPrompt(models.Model):
         Number of Purchase Orders: {len(purchase_orders)}
         POS Order Data : {pos_list}
         POS Order Payment Data: {pos_payment_list}
+        Partner data: {partner_list}
         --------------------------------
         """
         return context
