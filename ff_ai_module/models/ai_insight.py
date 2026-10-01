@@ -68,7 +68,6 @@ class AIPrompt(models.Model):
 
         sale_orders = self.env['sale.order'].with_company(self.env.company).search([('state', 'in', ['sale', 'done'])])
         sale_list = []
-        sales_tax_list=[]
         for sale in sale_orders.order_line:
             sale_data = {
                 'sale_order_name': sale.order_id.name,
@@ -85,7 +84,6 @@ class AIPrompt(models.Model):
                 'sale_order_total_tax_amount': sale.order_id.amount_tax,
                 'sale_order_total_amount_order': sale.order_id.amount_total
             }
-            sales_tax_list.append(sale.amount_tax)
             sale_list.append(sale_data)
         total_sales = sum(sale_orders.mapped('amount_untaxed'))
 
@@ -145,12 +143,29 @@ class AIPrompt(models.Model):
         total_purchases = sum(purchase_orders.mapped('amount_untaxed'))
         total_profit = total_sales - total_purchases
 
+        stock_moves_list = []
+        stock_move_recs = self.env['stock.picking'].search([])
+        for move in stock_move_recs.move_ids_without_package:
+            stock_move_data = {
+                'stock_move_name': move.picking_id.name,
+                'stock_move_receiving_name': move.picking_id.partner_id.name,
+                'stock_move_operation_type': move.picking_id.picking_type_id.name,
+                'stock_move_source_location': move.picking_id.location_id.name,
+                'stock_move_destination_location': move.picking_id.location_dest_id.name,
+                'stock_move_scheduled_date': move.picking_id.scheduled_date,
+                'stock_move_source_document': move.picking_id.origin,
+                'stock_move_product': move.product_id.name,
+                'stock_move_product_demanded_quantity': move.product_uom_qty,
+                'stock_move_product_quantity': move.quantity,
+                'stock_move_product_uom': move.product_uom,
+            }
+            stock_moves_list.append(stock_move_data)
+
         context = f"""
         --- ODOO SYSTEM DATA CONTEXT ---
         Product data: {product_list}
         Stock Lot data: {stock_lot}
         Sale Orders: {sale_list}
-        sales tax: {sales_tax_list}
         Total Confirmed Sales Amount (Untaxed): {total_sales:.2f}
         purchase tax: {purchase_tax_list}
         purchase data: {purchase_data}
@@ -161,6 +176,7 @@ class AIPrompt(models.Model):
         POS Order Data : {pos_list}
         POS Order Payment Data: {pos_payment_list}
         Partner data: {partner_list}
+        Stock Movement data: {stock_moves_list}
         --------------------------------
         """
         return context
