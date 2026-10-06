@@ -16,7 +16,7 @@
     "assets": {
         "point_of_sale._assets_pos": [
             "pos_out_of_stock_validation/static/src/js/pos_stock_validation.js",
-            "pos_out_of_stock_validation/static/src/js/expiration_validation.js",
+            # "pos_out_of_stock_validation/static/src/js/expiration_validation.js",
         ],
     },
 
