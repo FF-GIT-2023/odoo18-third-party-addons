@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <!-- Header -->
+    <header class="container py-4 border-bottom d-flex justify-content-between align-items-center">
+        <a href="https://candidroot.com/" target="_blank">
+            <img src="images/icon.png" alt="CandidRoot Logo" style="height:60px;">
+        </a>
+        <div class="d-flex gap-2">
+            <span class="btn btn-dark btn-sm"><i class="fa fa-check me-1"></i>
+                Community</span>
+            <span class="btn btn-dark btn-sm"><i class="fa fa-check me-1"></i>
+                Enterprise</span>
+        </div>
+    </header>
+
+    <section class="container my-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary" style="font-size: 32px;">POS Lot Expiration Warning</h2>
+        </div>
+
+        <div class="col-lg-10 mx-auto">
+            <p class="text-muted" style="font-size: 17px; line-height: 1.8;">
+                <strong class="text-dark">POS Lot Expiration Warning</strong> is a lightweight Point of Sale module that
+                <span class="text-info fw-semibold">warns cashiers when an expired lot or serial number is selected</span>.
+                It checks the selected lot's expiration date during the normal POS lot selection flow.
+                <br><br>
+                <span class="fw-semibold text-dark">By default</span>, Odoo allows expired lots to be selected in POS
+                without a cashier warning.
+                <br><br>
+                This module keeps the sale non-blocking and simply displays an acknowledgement popup with the product,
+                lot/serial number, and expiration date.
+                <br><br>
+                Cashiers can verify the selected lot before continuing, while managers can disable the warning per POS
+                configuration when it is not required.
+            </p>
+        </div>
+    </section>
+
+    <section id="overview" class="container my-5 fade-in">
+        <h2 class="section-title"><i class="fa fa-book text-primary me-2"></i> Overview &amp; Features</h2>
+        <div class="section-card">
+            <p>
+                Show a clear POS warning when a selected lot or serial number has an expiration date in the past.
+            </p>
+
+            <h5>Key Features:</h5>
+            <div class="row">
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card bg-light p-3 mb-3 shadow w-100">
+                        <i class="fa fa-exclamation-triangle fa-2x mb-3 text-primary"></i>
+                        <h6>Expired Lot Warning</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fa fa-check text-primary"></i> Checks selected POS lots</li>
+                            <li><i class="fa fa-check text-primary"></i> Uses standard expiration date</li>
+                            <li><i class="fa fa-check text-primary"></i> Shows product and lot details</li>
+                            <li><i class="fa fa-check text-primary"></i> Cashier can proceed after OK</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card bg-light p-3 mb-3 shadow w-100">
+                        <i class="fa fa-sliders fa-2x mb-3 text-primary"></i>
+                        <h6>POS Configuration</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fa fa-check text-primary"></i> Per POS configuration toggle</li>
+                            <li><i class="fa fa-check text-primary"></i> Enabled by default</li>
+                            <li><i class="fa fa-check text-primary"></i> Available in POS settings</li>
+                            <li><i class="fa fa-check text-primary"></i> No extra setup model</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-stretch">
+                    <div class="card bg-light p-3 mb-3 shadow w-100">
+                        <i class="fa fa-barcode fa-2x mb-3 text-primary"></i>
+                        <h6>Tracked Products</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fa fa-check text-primary"></i> Works with lots</li>
+                            <li><i class="fa fa-check text-primary"></i> Works with serial numbers</li>
+                            <li><i class="fa fa-check text-primary"></i> Supports multiple selected lots</li>
+                            <li><i class="fa fa-check text-primary"></i> No payment flow impact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="installation" class="container my-5 fade-in">
+        <h2 class="section-title">
+            <i class="fa fa-rocket text-primary me-2"></i> Installation
+        </h2>
+        <div class="section-card">
+            <p>Ensure Odoo 18.0 is installed. No extra Python dependencies are required.</p>
+            <ul>
+                <li>
+                    <strong>Dependencies:</strong> Standard <code>point_of_sale</code> and <code>product_expiry</code>
+                    modules are required.
+                </li>
+                <li>
+                    <strong>Upload &amp; Install:</strong> Upload the <code>pos_lot_expiration_warning_cr</code> folder to your
+                    Odoo addons path, update the apps list, and click <strong>Install</strong>.
+                </li>
+                <li>
+                    <strong>Default Setting:</strong> The warning is enabled by default on POS configurations.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="configuration" class="container my-5 fade-in">
+        <h2 class="section-title">
+            <i class="fa fa-cogs text-primary me-2"></i> Configuration / Setup Guide
+        </h2>
+        <div class="section-card">
+            <p>
+                Configure the warning from Point of Sale settings. The setting is stored per POS configuration.
+            </p>
+            <ul>
+                <li><strong>Open Settings:</strong> Go to <em>Point of Sale &gt; Configuration &gt; Settings</em>.</li>
+                <li><strong>Select POS:</strong> Choose the POS configuration at the top of the settings page.</li>
+                <li><strong>Enable Warning:</strong> Keep <strong>Lot Expiration Warning</strong> enabled.</li>
+                <li><strong>Save:</strong> Save the settings and open the POS session.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="setup" class="container my-5 fade-in">
+        <h2 class="section-title mb-4">
+            <i class="fa fa-wrench text-primary me-2"></i> Setup Steps
+        </h2>
+
+        <div class="p-3 mb-3 bg-light shadow-sm rounded">
+            <h3 class="mb-3">
+                <span class="fw-bold me-2">1.</span>
+                <i class="fa fa-cogs me-2"></i> Enable Lot Expiration Warning
+            </h3>
+            <p>Enable the warning from Point of Sale settings for the required POS configuration.</p>
+            <img src="image_1.png" alt="Enable POS Lot Expiration Warning" class="img-fluid border rounded mt-3 shadow-sm"
+                style="width: 100%;">
+        </div>
+
+        <div class="p-3 mb-3 bg-secondary shadow-sm rounded">
+            <h3 class="mb-3">
+                <span class="fw-bold me-2">2.</span>
+                <i class="fa fa-warning me-2"></i> Select an Expired Lot in POS
+            </h3>
+            <p>When the cashier selects an expired lot or serial number, POS shows a warning popup and lets the sale continue after acknowledgement.</p>
+            <img src="image_2.png" alt="POS Expired Lot Warning Popup" class="img-fluid border rounded mt-3 shadow-sm"
+                style="width: 100%;">
+        </div>
+
+    </section>
+
+    <section id="usage" class="container my-5 fade-in">
+        <h2 class="section-title">
+            <i class="fa fa-clipboard me-2"></i> Usage
+        </h2>
+        <div class="section-card">
+            <p>Once installed and configured, cashiers continue using the standard POS lot selection flow.</p>
+            <ul>
+                <li>Add a tracked product to the POS order</li>
+                <li>Select or scan the lot/serial number</li>
+                <li>If the lot is expired, review the warning popup</li>
+                <li>Click OK to acknowledge and continue</li>
+                <li>Complete the order normally</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="troubleshooting" class="container my-5">
+        <h2 class="section-title">
+            <i class="fa fa-search me-2"></i> Troubleshooting
+        </h2>
+        <div class="section-card">
+            <ul>
+                <li><strong>No warning shown:</strong> Ensure the POS configuration has <strong>Lot Expiration Warning</strong> enabled.</li>
+                <li><strong>No expiration date:</strong> Lots without an expiration date do not show a warning.</li>
+                <li><strong>Lot not found:</strong> Manually created/new lot names cannot be checked until the lot exists in inventory.</li>
+                <li><strong>POS not updated:</strong> Reload the POS session after changing the configuration.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="oe_container oe_dark" id="support">
+        <div class="oe_mt16 oe_mb16">
+            <h2 class="oe_slogan">Get Help From Us!</h2>
+        </div>
+        <div class="oe_slogan">
+            <a class="btn btn-primary btn-md mt8" style="color: #FFFFFF !important;" href="mailto:info@candidroot.com"
+                target="_blank">
+                <i class="fa fa-envelope"></i>
+                Email
+            </a>
+            <a class="btn btn-primary btn-md mt8" style="color: #FFFFFF !important;"
+                href="https://www.candidroot.com/contactus" target="_blank">
+                <i class="fa fa-phone"></i>
+                Need Our Service ?
+            </a>
+            <a class="btn btn-primary btn-md mt8" style="color: #FFFFFF !important;"
+                href="https://apps.odoo.com/apps/modules/browse?search=candidroot" target="_blank">
+                <i class="fa fa-suitcase"></i>
+                Our Products
+            </a>
+        </div>
+    </section>
+
+    <div class="row pb-sm-5 px-1 pb-4" id="services">
+        <h2 class="oe_slogan w-100">Our Services</h2>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Implementation.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-implementation" name="Odoo Implementation"
+                            title="Odoo Implementation Services">
+                            Odoo Implementation
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Customization.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-customization" name="Odoo Customization"
+                            title="Odoo Customization Services">
+                            Odoo Customization
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Development.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-development" name="Odoo Development"
+                            title="Odoo Development Services">
+                            Odoo Development
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/migration.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-migration" name="Odoo Migration"
+                            title="Odoo Migration Services">
+                            Odoo Migration
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Integration.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-integration" name="Odoo Integration"
+                            title="Odoo Integration Services">
+                            Odoo Integration
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Consulting.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-consulting" name="Odoo Consulting"
+                            title="Odoo Consulting Services">
+                            Odoo Consulting
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Odoo Support.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-support" name="Odoo Support"
+                            title="Odoo Support Services">
+                            Odoo Support
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Odoo Theme Development.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-theme" name="Odoo Theme Development"
+                            title="Odoo Theme Development Services">
+                            Odoo Theme Development
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/CMS.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-cms" name="Odoo CMS Development"
+                            title="Odoo CMS Development">
+                            Odoo CMS Development
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/E-Commerce.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-ecommerce" name="Odoo Ecommerce Development"
+                            title="Odoo Ecommerce Development">
+                            Odoo Ecommerce Development
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Mobile Application.png" alt="support" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-mobile-application" name="Odoo Mobile App"
+                            title="Odoo Mobile App">
+                            Odoo Mobile App
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
+            <div class="card"
+                style="box-shadow: -1px 1px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07); border-radius: 10px; border: none; min-height: 145px;">
+                <div style="padding: 1.25rem;" class="text-center">
+                    <img src="images/Odoo Training.png" alt="apps" style="width: 100%;">
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title" style="font-size: 19px;">
+                        <a href="https://www.candidroot.com/odoo-training" name="Odoo Training" title="Odoo Training">
+                            Odoo Training
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container oe_dark" id="follow">
+        <h2 class="oe_slogan">Please Follow Us On</h2>
+        <div class="oe_slogan">
+            <a class="btn btn-primary" href="https://www.facebook.com/candidrootodoo" target="_blank"
+                style="background-color: #3B5998;">
+                <span class="fa fa-facebook"></span>
+            </a>
+            <a class="btn btn-primary" style="background-color: #55ACEE;" href="https://twitter.com/candidroot"
+                target="_blank">
+                <span class="fa fa-twitter"></span>
+            </a>
+            <a class="btn btn-primary" style="background-color: #007BB6;"
+                href="https://www.linkedin.com/in/candidroot-solutions-968560166" target="_blank">
+                <span class="fa fa-linkedin"></span>
+            </a>
+            <a class="btn btn-primary" style="background-color: #cd201f;"
+                href="https://www.youtube.com/channel/UCBJPsoeB2TT_6h9dYNqsZ5A" target="_blank">
+                <span class="fa fa-youtube"></span>
+            </a>
+            <a class="btn btn-primary" style="background-color: #444444;" href="https://github.com/candidroot"
+                target="_blank">
+                <span class="fa fa-github"></span>
+            </a>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
