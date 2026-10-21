@@ -1,44 +1,177 @@
 import { patch } from "@web/core/utils/patch";
-import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
+import { ErrorDialog } from "@web/core/errors/error_dialogs";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
+import {PosData} from "@point_of_sale/app/models/data_service";
+import {ProductProduct} from "@point_of_sale/app/models/product_product";
+import {PosOrderline} from "@point_of_sale/app/models/pos_order_line";
 import { useService } from "@web/core/utils/hooks";
+import {rpc} from "@web/core/network/rpc";
+import {useEnv} from "@odoo/owl";
+import {standardErrorDialogProps as error} from "../../../../../../addons/web/static/src/core/errors/error_dialogs";
 
-patch(ProductScreen.prototype, {
-    setup() {
-        super.setup();
-        this.orm = useService("orm");
-        this.dialog = useService("dialog");
+patch(PosData.prototype, {
+    async setup(env, {dialog}) {
+        await super.setup(...arguments);
+        this.models.dialog = dialog;
     },
+});
 
-    async addProductToOrder(product, options) {
+patch(ProductProduct.prototype, {
+    async checkProductLotExpiration(lot,product, company) {
+        console.log("LOgggg:",lot, product)
+        const lotData = await rpc("/web/dataset/call_kw", {
+            model: "stock.lot",
+            method: "search_read",
+            args: [
+                [
+                    "|",
+                    ["company_id", "=", false],
+                    ["company_id", "=", company.id],
+                    ["product_id", "=", product.id],
+                    ["name", "=", lot],
+                ],
+            ],
+            kwargs: {
+                fields: ["id", "expiration_date", "product_id"],
+            },
+        });
 
-        const lots = await this.orm.searchRead("stock.lot", [["product_id", "=", product.id],], ["name", "expiration_date"]);
+        console.log("LOT DATA:", lotData);
+        console.log("LOT DATA:", lotData[0].expiration_date);
+        if (lotData[0].expiration_date) {
+            const expiry = new Date(lotData[0].expiration_date);
+            const today = new Date();
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+            expiry.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
 
-        for (const lot of lots) {
+            if (expiry < today) {
+                console.log("Expireddddddddd !!!!!!")
+            }
 
-            if (lot.expiration_date) {
 
-                const expiryDate = new Date(lot.expiration_date);
-                expiryDate.setHours(0, 0, 0, 0);
 
-                if (expiryDate < today) {
+            return false;
+        }
+    },
+});
 
-                    this.dialog.add(AlertDialog, {
-                        title: _t("Expired Product"),
-                        body: _t(
-                            `The product "${product.display_name}" has an expired lot "${lot.name}" and cannot be sold.`
-                        ),
-                    });
+patch(PosOrderline.prototype, {
+    async setPackLotLines({modifiedPackLotLines, newPackLotLines}) {
+        console.log("usee:", this.product_id)
+        console.log("newPackLotLines:", newPackLotLines)
 
+        if (this.product_id.use_expiration_date) {
+            for (const newLotLine of newPackLotLines) {
+                if (
+                    await this.product_id.checkProductLotExpiration(
+                        newLotLine.lot_name,
+                        this.product_id,
+                        this.company
+                    )
+                ) {
+                    return;
+                }
+            }
+            for (const modifiedLotline of Object.values(modifiedPackLotLines)) {
+                if (
+                    await this.product_id.checkProductLotExpiration(
+                        modifiedLotline,
+                        this.company
+                    )
+                ) {
                     return;
                 }
             }
         }
-
-        await super.addProductToOrder(product, options);
+        return await super.setPackLotLines(...arguments);
     },
 });
+
+
+
+//     if (lotData.length === 0) {
+    //         await this.models.dialog?.add(AlertDialog, {
+    //             title: _t("Problem with lots"),
+    //             body: _t("A lot was not found. No changes were applied."),
+    //         });
+    //         return true;
+    //     }
+    //
+    //     const expiryDate = new Date(lotData[0].expiration_date.replace(" ", "T") + "Z");
+    //     if (expiryDate < new Date()) {
+    //         await this.models.dialog?.add(AlertDialog, {
+    //             title: _t("Problem with lots"),
+    //             body: _t(
+    //                 "A lot is expired and you are not enabled to sell expired lots. No changes were applied."
+    //             ),
+    //         });
+    //         return true;
+    //     }
+
+
+
+// patch(EditListInput.prototype, {
+//     setup() {
+//         super.setup(...arguments);
+//         this.orm = this.orm || useService("orm");
+//     },
+//
+//     async onSelectOption(optionValue) {
+//         const lotName = optionValue;
+//
+//         let expiryMap = this.props.item.lot_expiry_map || {};
+//         let lotData = expiryMap[lotName];
+//         let productId = null;
+//         const product = this.props.product
+//         const lots = await this.orm.searchRead(
+//                     "stock.lot",
+//                     [["name", "=", lotName]],
+//                     ["name", "expiration_date", "product_id"],
+//                 );
+//         console.log("lot_records:", lots)
+//         if (lots && lots.length > 0) {
+//                 lotData = lots[1];
+//         }
+//
+//
+//         if (!lotData) {
+//             try {
+//                 const lots = await this.orm.searchRead(
+//                     "stock.lot",
+//                     [["name", "=", lotName]],
+//                     ["name", "expiration_date"]
+//                 );
+//
+//                 if (lots && lots.length > 0) {
+//                     lotData = lots[0];
+//                 }
+//             } catch (error) {
+//                 console.error("Failed to fetch lot expiry via ORM:", error);
+//             }
+//         }
+//
+//
+//         if (lotData?.expiration_date) {
+//             const expiry = new Date(lotData.expiration_date);
+//             const today = new Date();
+//
+//             expiry.setHours(0, 0, 0, 0);
+//             today.setHours(0, 0, 0, 0);
+//
+//             if (expiry < today) {
+//                 this.env.services.dialog.add(AlertDialog, {
+//                     title: _t("Expired Lot"),
+//                     body: _t(
+//                         "Lot %s expired on %s. Please select another lot.",
+//                         lotName,
+//                         lotData.expiration_date
+//                     ),
+//                 });
+//                 return;
+//             }
+//         }
+//         return super.onSelectOption(...arguments);
+//     },
+// });
